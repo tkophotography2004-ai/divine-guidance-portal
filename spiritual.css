@@ -1,0 +1,633 @@
+/* Divine Talks with Zahrah Imani - Spiritual CSS */
+
+/* Color Variables */
+:root {
+    --divine-gold: #FFD700;
+    --divine-purple: #2B0A3D;
+    --divine-dark: #1A0726;
+    --divine-light: #F5F5DC;
+    --divine-accent: #8A2BE2;
+    --gradient-primary: linear-gradient(135deg, var(--divine-gold), var(--divine-accent));
+    --gradient-secondary: linear-gradient(135deg, var(--divine-purple), var(--divine-dark));
+}
+
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Lora', serif;
+    background: var(--gradient-secondary);
+    color: var(--divine-light);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+.spiritual-bg {
+    background: var(--divine-dark);
+    background-image: 
+        radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(138, 43, 226, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(255, 215, 0, 0.05) 0%, transparent 50%);
+    min-height: 100vh;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.text-divine {
+    color: var(--divine-gold) !important;
+}
+
+.text-light-75 {
+    color: rgba(245, 245, 220, 0.75) !important;
+}
+
+.text-light-50 {
+    color: rgba(245, 245, 220, 0.5) !important;
+}
+
+.gradient-text {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Navigation */
+.divine-nav {
+    background: rgba(26, 7, 38, 0.95) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+    padding: 1rem 0;
+}
+
+.navbar-brand {
+    font-family: 'Cinzel', serif !important;
+    font-size: 1.5rem !important;
+    color: var(--divine-gold) !important;
+}
+
+.divine-eye {
+    color: var(--divine-gold);
+    margin-right: 0.5rem;
+    animation: pulse-glow 2s infinite;
+}
+
+.divine-eye-large {
+    font-size: 3rem;
+    color: var(--divine-gold);
+    animation: pulse-glow 3s infinite;
+}
+
+.nav-link {
+    color: var(--divine-light) !important;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--divine-gold) !important;
+    transform: translateY(-2px);
+}
+
+/* Buttons */
+.btn-divine {
+    background: var(--gradient-primary);
+    border: none;
+    color: var(--divine-dark);
+    font-weight: 600;
+    font-family: 'Cinzel', serif;
+    padding: 0.75rem 2rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+
+.btn-divine:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
+    color: var(--divine-dark);
+}
+
+.btn-outline-divine {
+    border: 2px solid var(--divine-gold);
+    color: var(--divine-gold);
+    background: transparent;
+    font-weight: 600;
+    font-family: 'Cinzel', serif;
+    padding: 0.75rem 2rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-divine:hover {
+    background: var(--divine-gold);
+    color: var(--divine-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+}
+
+/* Animations */
+@keyframes pulse-glow {
+    0%, 100% { 
+        opacity: 1;
+        text-shadow: 0 0 10px var(--divine-gold), 0 0 20px var(--divine-gold), 0 0 30px var(--divine-gold);
+    }
+    50% { 
+        opacity: 0.8;
+        text-shadow: 0 0 5px var(--divine-gold), 0 0 10px var(--divine-gold), 0 0 15px var(--divine-gold);
+    }
+}
+
+@keyframes animate-float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-10px) rotate(1deg); }
+    66% { transform: translateY(-5px) rotate(-1deg); }
+}
+
+@keyframes animate-fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fadeInUp {
+    animation: animate-fadeInUp 1s ease-out;
+}
+
+.animate-fadeInUp.delay-1 {
+    animation-delay: 0.2s;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+.animate-fadeInUp.delay-2 {
+    animation-delay: 0.4s;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+.animate-fadeInUp.delay-3 {
+    animation-delay: 0.6s;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+.animate-fadeInUp.delay-4 {
+    animation-delay: 0.8s;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+.animate-float {
+    animation: animate-float 6s ease-in-out infinite;
+}
+
+.pulse-glow {
+    animation: pulse-glow 2s infinite;
+}
+
+/* Hero Section */
+.hero-section {
+    padding-top: 5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    line-height: 1.2;
+}
+
+.hero-stats .stat-item {
+    padding: 1rem;
+}
+
+.hero-stats h3 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.mystical-circle {
+    width: 300px;
+    height: 300px;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--divine-gold);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+}
+
+.energy-rings::before,
+.energy-rings::after {
+    content: '';
+    position: absolute;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 50%;
+    animation: pulse-ring 4s infinite;
+}
+
+.energy-rings::before {
+    width: 350px;
+    height: 350px;
+    top: -27px;
+    left: -27px;
+}
+
+.energy-rings::after {
+    width: 400px;
+    height: 400px;
+    top: -52px;
+    left: -52px;
+    animation-delay: 2s;
+}
+
+@keyframes pulse-ring {
+    0% {
+        transform: scale(0.8);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.2);
+        opacity: 0;
+    }
+}
+
+/* TikTok Link */
+.tiktok-link {
+    color: var(--divine-gold);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.tiktok-link:hover {
+    color: var(--divine-light);
+    transform: translateY(-2px);
+}
+
+/* Session Cards */
+.sessions-section {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.session-card {
+    background: rgba(26, 7, 38, 0.8);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: 15px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.session-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.session-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--divine-gold);
+    box-shadow: 0 20px 40px rgba(255, 215, 0, 0.2);
+}
+
+.session-card:hover::before {
+    opacity: 1;
+}
+
+.session-card.featured {
+    border-color: var(--divine-gold);
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+}
+
+.popular-badge {
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    background: var(--gradient-primary);
+    color: var(--divine-dark);
+    padding: 0.5rem 1rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: 'Cinzel', serif;
+}
+
+.session-icon i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.price-tag {
+    margin-bottom: 1rem;
+}
+
+.price-tag .price {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--divine-gold);
+    font-family: 'Cinzel', serif;
+}
+
+.price-tag .duration {
+    display: block;
+    color: var(--text-light-75);
+    font-size: 0.9rem;
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+}
+
+.feature-list li {
+    padding: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.card-header, .card-body, .card-footer {
+    position: relative;
+    z-index: 2;
+}
+
+/* About Zahrah Section */
+.about-zahrah {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.mystical-frame {
+    width: 250px;
+    height: 250px;
+    margin: 0 auto;
+    position: relative;
+    border: 3px solid var(--divine-gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.avatar-placeholder {
+    width: 200px;
+    height: 200px;
+    background: var(--gradient-secondary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.divine-avatar {
+    font-size: 6rem;
+    color: var(--divine-gold);
+    opacity: 0.8;
+}
+
+.aura-effect {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    border-radius: 50%;
+    animation: pulse-ring 3s infinite;
+}
+
+.quality-item h5 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.divine-quote {
+    background: rgba(255, 215, 0, 0.1);
+    padding: 2rem;
+    border-left: 4px solid var(--divine-gold);
+    border-radius: 8px;
+    margin: 2rem 0;
+}
+
+/* Testimonials */
+.testimonial-card {
+    background: rgba(26, 7, 38, 0.6);
+    padding: 2rem;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--divine-gold);
+    box-shadow: 0 15px 35px rgba(255, 215, 0, 0.2);
+}
+
+.stars i {
+    color: var(--divine-gold);
+    margin-right: 0.2rem;
+}
+
+/* Forms */
+.auth-section {
+    padding-top: 8rem;
+}
+
+.auth-card {
+    background: rgba(26, 7, 38, 0.9);
+    padding: 3rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.divine-input {
+    background: rgba(245, 245, 220, 0.1) !important;
+    border: 1px solid rgba(255, 215, 0, 0.3) !important;
+    color: var(--divine-light) !important;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.divine-input:focus {
+    background: rgba(245, 245, 220, 0.15) !important;
+    border-color: var(--divine-gold) !important;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3) !important;
+    color: var(--divine-light) !important;
+}
+
+.divine-input::placeholder {
+    color: rgba(245, 245, 220, 0.5) !important;
+}
+
+/* Footer */
+.divine-footer {
+    background: var(--divine-dark);
+    padding: 3rem 0 2rem;
+    border-top: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.social-links a {
+    transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+    transform: translateY(-3px) scale(1.1);
+}
+
+/* Main Content */
+.main-content {
+    padding-top: 80px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+
+    .mystical-circle {
+        width: 200px;
+        height: 200px;
+    }
+
+    .energy-rings::before {
+        width: 250px;
+        height: 250px;
+        top: -27px;
+        left: -27px;
+    }
+
+    .energy-rings::after {
+        width: 300px;
+        height: 300px;
+        top: -52px;
+        left: -52px;
+    }
+
+    .session-card {
+        margin-bottom: 2rem;
+    }
+
+    .auth-card {
+        padding: 2rem;
+        margin: 1rem;
+    }
+
+    .hero-stats .col-4 {
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+
+    .btn-divine, .btn-outline-divine {
+        padding: 0.6rem 1.5rem;
+        font-size: 0.9rem;
+    }
+
+    .mystical-frame {
+        width: 180px;
+        height: 180px;
+    }
+
+    .avatar-placeholder {
+        width: 150px;
+        height: 150px;
+    }
+
+    .divine-avatar {
+        font-size: 4rem;
+    }
+}
+
+/* Loading States */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Success States */
+.success-glow {
+    animation: success-pulse 2s ease-out;
+}
+
+@keyframes success-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(40, 167, 69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--divine-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--divine-gold);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--divine-accent);
+}
+
+/* Focus States for Accessibility */
+.btn-divine:focus,
+.btn-outline-divine:focus,
+.divine-input:focus {
+    outline: 2px solid var(--divine-gold);
+    outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+    .divine-nav,
+    .divine-footer {
+        display: none;
+    }
+
+    body {
+        background: white !important;
+        color: black !important;
+    }
+}

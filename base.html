@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Divine Talks with Zahrah Imani - Spiritual Guidance & Ancestral Wisdom{% endblock %}</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <!-- Custom Spiritual CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/spiritual.css') }}">
+
+    <!-- Meta Tags for Social Media -->
+    <meta name="description" content="Connect with Zahrah Imani for divine spiritual guidance, ancestral wisdom, and transformational healing. Book your session today.">
+    <meta name="keywords" content="spiritual guidance, ancestral wisdom, healing, divine talks, Zahrah Imani, TikTok spiritual">
+    <meta property="og:title" content="Divine Talks with Zahrah Imani">
+    <meta property="og:description" content="Experience authentic spiritual guidance through AI-powered conversations with Zahrah Imani">
+    <meta property="og:image" content="{{ url_for('static', filename='images/zahrah-og.jpg') }}">
+    <meta property="og:url" content="{{ request.url }}">
+
+    {% block head %}{% endblock %}
+</head>
+<body class="spiritual-bg">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark divine-nav fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{{ url_for('home') }}">
+                <i class="fas fa-eye divine-eye"></i>
+                Divine Talks with Zahrah Imani
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                    </li>
+
+                    {% if current_user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('dashboard') }}">My Sessions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('book') }}">Book Session</a>
+                        </li>
+                        {% if current_user.is_admin %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('admin_dashboard') }}">
+                                <i class="fas fa-crown"></i> Admin
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user"></i> {{ current_user.first_name }}
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ url_for('logout') }}">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('login') }}">Sign In</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-divine ms-2" href="{{ url_for('register') }}">Create Account</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages mt-5 pt-3">
+                <div class="container">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                            <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'check-circle' if category == 'success' else 'info-circle' }}"></i>
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="divine-footer mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="text-divine">Divine Talks with Zahrah Imani</h5>
+                    <p class="text-light">Ancient wisdom for modern souls. Experience transformational spiritual guidance through divine conversations.</p>
+                    <div class="social-links">
+                        <a href="{{ tiktok_url }}" target="_blank" class="text-divine me-3">
+                            <i class="fab fa-tiktok fa-lg"></i>
+                        </a>
+                        <a href="#" class="text-divine me-3">
+                            <i class="fab fa-instagram fa-lg"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-divine">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('home') }}" class="text-light-50">Home</a></li>
+                        {% if current_user.is_authenticated %}
+                        <li><a href="{{ url_for('book') }}" class="text-light-50">Book Session</a></li>
+                        <li><a href="{{ url_for('dashboard') }}" class="text-light-50">My Sessions</a></li>
+                        {% else %}
+                        <li><a href="{{ url_for('register') }}" class="text-light-50">Create Account</a></li>
+                        <li><a href="{{ url_for('login') }}" class="text-light-50">Sign In</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-divine">Session Types</h6>
+                    <ul class="list-unstyled">
+                        <li><span class="text-light-50">Quick Guidance - $17</span></li>
+                        <li><span class="text-light-50">Deep Dive - $97</span></li>
+                        <li><span class="text-light-50">Intensive Healing - $297</span></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4" style="border-color: #FFD700;">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0 text-light-50">
+                        &copy; 2024 Divine Talks with Zahrah Imani. 
+                        <span class="text-divine">They tried to make you forget. But I am here to help you remember.</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="{{ url_for('static', filename='js/divine.js') }}"></script>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

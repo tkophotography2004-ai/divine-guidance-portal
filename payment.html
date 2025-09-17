@@ -1,0 +1,285 @@
+{% extends "base.html" %}
+
+{% block title %}Secure Payment - Divine Talks with Zahrah Imani{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <!-- Hero Section -->
+    <div class="hero-gradient">
+        <div class="container py-4">
+            <div class="row align-items-center">
+                <div class="col-12 text-center">
+                    <h1 class="display-6 text-white mb-3 animate-fadeInUp">
+                        Complete Your Sacred Journey ✨
+                    </h1>
+                    <p class="lead text-white-80 mb-0 animate-fadeInUp" style="animation-delay: 0.2s;">
+                        Secure payment for your divine session
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <!-- Session Summary -->
+            <div class="col-lg-5 mb-4">
+                <div class="card spiritual-card h-100">
+                    <div class="card-header text-center">
+                        <h4 class="mb-0">
+                            <span class="spiritual-icon me-2">📋</span>
+                            Session Details
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="session-summary">
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <h5 class="text-divine-gold mb-2">
+                                        {{ booking.session_type.replace('_', ' ').title() }} Session
+                                    </h5>
+                                    <p class="mb-1">
+                                        <strong>Date:</strong> {{ booking.booking_datetime_cst.strftime('%B %d, %Y') }}
+                                    </p>
+                                    <p class="mb-1">
+                                        <strong>Time:</strong> {{ booking.booking_datetime_cst.strftime('%I:%M %p CST') }}
+                                    </p>
+                                    <p class="mb-0">
+                                        <strong>Duration:</strong> 
+                                        {{ '15 minutes' if booking.session_type == 'quick_insight' else 
+                                           '45 minutes' if booking.session_type == 'deep_reading' else 
+                                           '90 minutes' }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            {% if booking.special_requests %}
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <h6>Special Requests:</h6>
+                                    <div class="alert alert-light small">
+                                        {{ booking.special_requests }}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            <hr>
+
+                            <!-- Pricing Breakdown -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span>Session Fee:</span>
+                                        <span>${{ "%.2f"|format(booking.amount) }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span>Processing Fee:</span>
+                                        <span>$0.00</span>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex justify-content-between align-items-center h5 text-divine-gold">
+                                        <strong>Total:</strong>
+                                        <strong>${{ "%.2f"|format(booking.amount) }}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Trust Badges -->
+                        <div class="row mt-4 text-center">
+                            <div class="col-4">
+                                <div class="trust-badge">
+                                    <span class="display-6">🔒</span>
+                                    <small class="d-block">SSL Encrypted</small>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="trust-badge">
+                                    <span class="display-6">💳</span>
+                                    <small class="d-block">Stripe Secure</small>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="trust-badge">
+                                    <span class="display-6">⭐</span>
+                                    <small class="d-block">5-Star Rated</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Form -->
+            <div class="col-lg-7">
+                <div class="card spiritual-card">
+                    <div class="card-header text-center">
+                        <h4 class="mb-0">
+                            <span class="spiritual-icon me-2">💳</span>
+                            Payment Information
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <!-- Payment Form -->
+                        <form id="payment-form">
+                            <div id="payment-element">
+                                <!-- Stripe Elements will create form elements here -->
+                            </div>
+
+                            <div id="payment-errors" role="alert" class="alert alert-danger mt-3" style="display: none;"></div>
+
+                            <div class="text-center mt-4">
+                                <button id="submit-payment" class="btn btn-spiritual btn-lg animate-pulse-glow">
+                                    <span class="payment-text">
+                                        <span class="me-2">✨</span>
+                                        Complete Payment - ${{ "%.2f"|format(booking.amount) }}
+                                    </span>
+                                    <span class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true" style="display: none;"></span>
+                                </button>
+                            </div>
+
+                            <!-- Payment Security Info -->
+                            <div class="row mt-3 text-center">
+                                <div class="col-12">
+                                    <small class="text-muted">
+                                        <span class="me-2">🛡️</span>
+                                        Your payment information is encrypted and secure. We never store your card details.
+                                    </small>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- Alternative Actions -->
+                        <div class="text-center mt-4">
+                            <a href="{{ url_for('main.book_session') }}" class="btn btn-outline-secondary">
+                                <span class="me-2">←</span>Back to Booking
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- What Happens Next -->
+                <div class="card spiritual-card mt-4">
+                    <div class="card-header text-center">
+                        <h5 class="mb-0">
+                            <span class="spiritual-icon me-2">🌟</span>
+                            What Happens Next?
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-start">
+                                    <span class="badge bg-divine-gold text-dark rounded-circle me-3 mt-1">1</span>
+                                    <div>
+                                        <h6 class="mb-1">Instant Confirmation</h6>
+                                        <small class="text-muted">You'll receive an email confirmation immediately</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-start">
+                                    <span class="badge bg-divine-gold text-dark rounded-circle me-3 mt-1">2</span>
+                                    <div>
+                                        <h6 class="mb-1">Session Reminder</h6>
+                                        <small class="text-muted">We'll remind you 24 hours and 30 minutes before</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-start">
+                                    <span class="badge bg-divine-gold text-dark rounded-circle me-3 mt-1">3</span>
+                                    <div>
+                                        <h6 class="mb-1">Join Your Session</h6>
+                                        <small class="text-muted">Access your session room 5 minutes early</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-start">
+                                    <span class="badge bg-divine-gold text-dark rounded-circle me-3 mt-1">4</span>
+                                    <div>
+                                        <h6 class="mb-1">Divine Guidance</h6>
+                                        <small class="text-muted">Connect with Zahrah for your personalized reading</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const stripe = Stripe('{{ stripe_publishable_key }}');
+    const elements = stripe.elements({
+        clientSecret: '{{ client_secret }}',
+        appearance: {
+            theme: 'stripe',
+            variables: {
+                colorPrimary: '#FFD700',
+                colorBackground: '#2B0A3D',
+                colorText: '#333333',
+                colorDanger: '#df1b41',
+                spacingUnit: '4px',
+                borderRadius: '8px',
+            }
+        }
+    });
+
+    const paymentElement = elements.create('payment');
+    paymentElement.mount('#payment-element');
+
+    const form = document.getElementById('payment-form');
+    const submitButton = document.getElementById('submit-payment');
+    const paymentErrors = document.getElementById('payment-errors');
+    const spinner = submitButton.querySelector('.spinner-border');
+    const paymentText = submitButton.querySelector('.payment-text');
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        // Disable submit button and show loading
+        submitButton.disabled = true;
+        spinner.style.display = 'inline-block';
+        paymentText.innerHTML = '<span class="me-2">⏳</span>Processing Payment...';
+        paymentErrors.style.display = 'none';
+
+        const {error} = await stripe.confirmPayment({
+            elements,
+            confirmParams: {
+                return_url: window.location.origin + '/payment/success/{{ booking.id }}',
+            },
+        });
+
+        if (error) {
+            // Show error to customer
+            paymentErrors.textContent = error.message;
+            paymentErrors.style.display = 'block';
+
+            // Re-enable submit button
+            submitButton.disabled = false;
+            spinner.style.display = 'none';
+            paymentText.innerHTML = '<span class="me-2">✨</span>Complete Payment - ${{ "%.2f"|format(booking.amount) }}';
+        }
+    });
+
+    // Handle real-time validation errors from the payment element
+    paymentElement.on('change', ({error}) => {
+        if (error) {
+            paymentErrors.textContent = error.message;
+            paymentErrors.style.display = 'block';
+        } else {
+            paymentErrors.style.display = 'none';
+        }
+    });
+});
+</script>
+{% endblock %}

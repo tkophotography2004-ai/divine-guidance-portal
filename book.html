@@ -1,0 +1,344 @@
+{% extends "base.html" %}
+
+{% block title %}Book Your Divine Session - Divine Talks with Zahrah Imani{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <!-- Hero Section -->
+    <div class="hero-gradient">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                <div class="col-12 text-center">
+                    <h1 class="display-5 text-white mb-3 animate-fadeInUp">
+                        Book Your Divine Session ✨
+                    </h1>
+                    <p class="lead text-white-80 mb-4 animate-fadeInUp" style="animation-delay: 0.2s;">
+                        Choose your path to spiritual clarity with Zahrah Imani
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <!-- Pricing Cards -->
+        <div class="row mb-5">
+            <div class="col-md-4 mb-4">
+                <div class="card spiritual-card h-100 {{ 'border-divine-gold' if form.session_type.data == 'quick_insight' }}">
+                    <div class="card-header text-center bg-gradient">
+                        <h4 class="mb-0">Quick Insight</h4>
+                        <div class="price-display">
+                            <span class="price">$17</span>
+                            <small class="d-block">15 minutes</small>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li><span class="text-divine-gold me-2">✨</span> Instant clarity on one specific question</li>
+                            <li><span class="text-divine-gold me-2">✨</span> Direct spiritual guidance</li>
+                            <li><span class="text-divine-gold me-2">✨</span> Perfect for urgent decisions</li>
+                            <li><span class="text-divine-gold me-2">✨</span> Same-day availability</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer text-center">
+                        <button type="button" class="btn btn-spiritual w-100 select-session" 
+                                data-session="quick_insight" data-price="17">
+                            Choose Quick Insight
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card spiritual-card h-100 position-relative {{ 'border-divine-gold' if form.session_type.data == 'deep_reading' }}">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="card-header text-center bg-gradient">
+                        <h4 class="mb-0">Deep Reading</h4>
+                        <div class="price-display">
+                            <span class="price">$97</span>
+                            <small class="d-block">45 minutes</small>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li><span class="text-divine-gold me-2">🔮</span> Comprehensive life guidance</li>
+                            <li><span class="text-divine-gold me-2">🔮</span> Multiple areas of focus</li>
+                            <li><span class="text-divine-gold me-2">🔮</span> Detailed spiritual insights</li>
+                            <li><span class="text-divine-gold me-2">🔮</span> Personalized action steps</li>
+                            <li><span class="text-divine-gold me-2">🔮</span> Session recording included</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer text-center">
+                        <button type="button" class="btn btn-spiritual w-100 select-session animate-pulse-glow" 
+                                data-session="deep_reading" data-price="97">
+                            Choose Deep Reading
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card spiritual-card h-100 {{ 'border-divine-gold' if form.session_type.data == 'soul_transformation' }}">
+                    <div class="card-header text-center bg-gradient">
+                        <h4 class="mb-0">Soul Transformation</h4>
+                        <div class="price-display">
+                            <span class="price">$297</span>
+                            <small class="d-block">90 minutes</small>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li><span class="text-divine-gold me-2">💫</span> Life-changing deep dive session</li>
+                            <li><span class="text-divine-gold me-2">💫</span> Soul purpose revelation</li>
+                            <li><span class="text-divine-gold me-2">💫</span> Healing & energy clearing</li>
+                            <li><span class="text-divine-gold me-2">💫</span> 30-day follow-up guidance</li>
+                            <li><span class="text-divine-gold me-2">💫</span> Exclusive meditation tracks</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer text-center">
+                        <button type="button" class="btn btn-spiritual w-100 select-session" 
+                                data-session="soul_transformation" data-price="297">
+                            Choose Soul Transformation
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Form -->
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card spiritual-card">
+                    <div class="card-header text-center">
+                        <h3 class="mb-0">
+                            <span class="spiritual-icon me-2">📅</span>
+                            Schedule Your Session
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" id="booking-form">
+                            {{ form.hidden_tag() }}
+
+                            <div class="row">
+                                <!-- Session Selection -->
+                                <div class="col-12 mb-4">
+                                    <label for="session_type" class="form-label">Selected Session Type</label>
+                                    {{ form.session_type(class="form-select", id="session_type") }}
+                                    {% if form.session_type.errors %}
+                                        <div class="text-danger small mt-1">
+                                            {% for error in form.session_type.errors %}
+                                                {{ error }}<br>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Date Selection -->
+                                <div class="col-md-6 mb-4">
+                                    <label for="booking_date" class="form-label">
+                                        <span class="me-2">📅</span>Select Date
+                                    </label>
+                                    {{ form.booking_date(class="form-control", id="booking_date") }}
+                                    {% if form.booking_date.errors %}
+                                        <div class="text-danger small mt-1">
+                                            {% for error in form.booking_date.errors %}
+                                                {{ error }}<br>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Time Selection -->
+                                <div class="col-md-6 mb-4">
+                                    <label for="booking_time" class="form-label">
+                                        <span class="me-2">⏰</span>Select Time (CST)
+                                    </label>
+                                    {{ form.booking_time(class="form-select", id="booking_time") }}
+                                    {% if form.booking_time.errors %}
+                                        <div class="text-danger small mt-1">
+                                            {% for error in form.booking_time.errors %}
+                                                {{ error }}<br>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    <small class="text-muted">
+                                        Available: Weekdays 5:30-10pm, Weekends 8am-10pm CST
+                                    </small>
+                                </div>
+
+                                <!-- Special Requests -->
+                                <div class="col-12 mb-4">
+                                    <label for="special_requests" class="form-label">
+                                        <span class="me-2">✨</span>Special Requests or Questions (Optional)
+                                    </label>
+                                    {{ form.special_requests(class="form-control", rows="3", 
+                                        placeholder="Share any specific areas you'd like guidance on...") }}
+                                    {% if form.special_requests.errors %}
+                                        <div class="text-danger small mt-1">
+                                            {% for error in form.special_requests.errors %}
+                                                {{ error }}<br>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- Session Summary -->
+                            <div class="alert alert-light mb-4" id="session-summary" style="display: none;">
+                                <h6><span class="me-2">📋</span>Session Summary:</h6>
+                                <div id="summary-content"></div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-spiritual btn-lg animate-pulse-glow" id="book-button">
+                                    <span class="me-2">🌟</span>
+                                    Proceed to Payment
+                                </button>
+                            </div>
+
+                            <!-- Trust Signals -->
+                            <div class="row mt-4 text-center">
+                                <div class="col-md-4">
+                                    <small class="text-muted">
+                                        <span class="me-1">🔒</span> Secure Payment
+                                    </small>
+                                </div>
+                                <div class="col-md-4">
+                                    <small class="text-muted">
+                                        <span class="me-1">⭐</span> 5-Star Reviews
+                                    </small>
+                                </div>
+                                <div class="col-md-4">
+                                    <small class="text-muted">
+                                        <span class="me-1">💫</span> Instant Confirmation
+                                    </small>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Testimonials -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3 class="text-center mb-4">
+                    <span class="spiritual-icon me-2">💕</span>
+                    What Our Souls Are Saying
+                </h3>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="card spiritual-card h-100">
+                            <div class="card-body text-center">
+                                <div class="mb-3">⭐⭐⭐⭐⭐</div>
+                                <p class="fst-italic">"Zahrah's guidance completely transformed my perspective. Her insights were exactly what my soul needed to hear."</p>
+                                <small class="text-muted">- Sarah M.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card spiritual-card h-100">
+                            <div class="card-body text-center">
+                                <div class="mb-3">⭐⭐⭐⭐⭐</div>
+                                <p class="fst-italic">"The deep reading session gave me clarity on my life path. Worth every penny and more!"</p>
+                                <small class="text-muted">- Michael R.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card spiritual-card h-100">
+                            <div class="card-body text-center">
+                                <div class="mb-3">⭐⭐⭐⭐⭐</div>
+                                <p class="fst-italic">"Amazing accuracy and compassionate delivery. Zahrah truly has a divine gift."</p>
+                                <small class="text-muted">- Jennifer L.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const sessionButtons = document.querySelectorAll('.select-session');
+    const sessionTypeSelect = document.getElementById('session_type');
+    const sessionSummary = document.getElementById('session-summary');
+    const summaryContent = document.getElementById('summary-content');
+    const bookButton = document.getElementById('book-button');
+
+    // Session type selection
+    sessionButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const sessionType = this.dataset.session;
+            const price = this.dataset.price;
+
+            // Update form
+            sessionTypeSelect.value = sessionType;
+
+            // Update UI
+            document.querySelectorAll('.card').forEach(card => {
+                card.classList.remove('border-divine-gold');
+            });
+            this.closest('.card').classList.add('border-divine-gold');
+
+            updateSessionSummary();
+        });
+    });
+
+    // Form change handlers
+    sessionTypeSelect.addEventListener('change', updateSessionSummary);
+    document.getElementById('booking_date').addEventListener('change', updateSessionSummary);
+    document.getElementById('booking_time').addEventListener('change', updateSessionSummary);
+
+    function updateSessionSummary() {
+        const sessionType = sessionTypeSelect.value;
+        const date = document.getElementById('booking_date').value;
+        const time = document.getElementById('booking_time').value;
+
+        if (sessionType && date && time) {
+            const sessionNames = {
+                'quick_insight': 'Quick Insight Session',
+                'deep_reading': 'Deep Reading Session', 
+                'soul_transformation': 'Soul Transformation Session'
+            };
+
+            const prices = {
+                'quick_insight': '$17',
+                'deep_reading': '$97',
+                'soul_transformation': '$297'
+            };
+
+            const durations = {
+                'quick_insight': '15 minutes',
+                'deep_reading': '45 minutes',
+                'soul_transformation': '90 minutes'
+            };
+
+            summaryContent.innerHTML = `
+                <strong>${sessionNames[sessionType]}</strong><br>
+                <small>Duration: ${durations[sessionType]} | Price: ${prices[sessionType]}</small><br>
+                <small>Date: ${new Date(date).toLocaleDateString()} at ${time} CST</small>
+            `;
+
+            sessionSummary.style.display = 'block';
+            bookButton.innerHTML = `<span class="me-2">🌟</span>Book Now - ${prices[sessionType]}`;
+        } else {
+            sessionSummary.style.display = 'none';
+            bookButton.innerHTML = '<span class="me-2">🌟</span>Proceed to Payment';
+        }
+    }
+
+    // Auto-select if session type is already set
+    if (sessionTypeSelect.value) {
+        updateSessionSummary();
+    }
+});
+</script>
+{% endblock %}

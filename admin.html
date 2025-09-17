@@ -1,0 +1,424 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Divine Talks with Zahrah Imani{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <!-- Admin Header -->
+    <div class="hero-gradient">
+        <div class="container py-4">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-6 text-white mb-2 animate-fadeInUp">
+                        Welcome, Tina! ✨
+                    </h1>
+                    <p class="lead text-white-80 mb-0 animate-fadeInUp" style="animation-delay: 0.2s;">
+                        Your Divine Talks Admin Dashboard
+                    </p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <div class="text-white">
+                        <small class="d-block">{{ current_time.strftime('%B %d, %Y') }}</small>
+                        <small class="d-block">{{ current_time.strftime('%I:%M %p CST') }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <!-- Revenue Overview -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h3 class="mb-4">
+                    <span class="spiritual-icon me-2">💰</span>
+                    Revenue Overview
+                </h3>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <div class="card spiritual-card h-100">
+                    <div class="card-body text-center">
+                        <div class="spiritual-icon mb-2">💸</div>
+                        <h5 class="card-title">Today's Revenue</h5>
+                        <h2 class="text-divine-gold">${{ "%.2f"|format(revenue_stats.today) }}</h2>
+                        <small class="text-muted">{{ revenue_stats.today_sessions }} sessions</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <div class="card spiritual-card h-100">
+                    <div class="card-body text-center">
+                        <div class="spiritual-icon mb-2">📅</div>
+                        <h5 class="card-title">This Week</h5>
+                        <h2 class="text-divine-gold">${{ "%.2f"|format(revenue_stats.week) }}</h2>
+                        <small class="text-muted">{{ revenue_stats.week_sessions }} sessions</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <div class="card spiritual-card h-100">
+                    <div class="card-body text-center">
+                        <div class="spiritual-icon mb-2">🗓️</div>
+                        <h5 class="card-title">This Month</h5>
+                        <h2 class="text-divine-gold">${{ "%.2f"|format(revenue_stats.month) }}</h2>
+                        <small class="text-muted">{{ revenue_stats.month_sessions }} sessions</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <div class="card spiritual-card h-100">
+                    <div class="card-body text-center">
+                        <div class="spiritual-icon mb-2">📊</div>
+                        <h5 class="card-title">All Time</h5>
+                        <h2 class="text-divine-gold">${{ "%.2f"|format(revenue_stats.total) }}</h2>
+                        <small class="text-muted">{{ revenue_stats.total_sessions }} sessions</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h3 class="mb-4">
+                    <span class="spiritual-icon me-2">⚡</span>
+                    Quick Actions
+                </h3>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <div class="card spiritual-card h-100">
+                    <div class="card-body text-center">
+                        <div class="spiritual-icon mb-3">📅</div>
+                        <h5 class="card-title">Manage Availability</h5>
+                        <p class="card-text">Update your schedule and available time slots</p>
+                        <button class="btn btn-spiritual" data-bs-toggle="modal" data-bs-target="#availabilityModal">
+                            Update Schedule
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <div class="card spiritual-card h-100">
+                    <div class="card-body text-center">
+                        <div class="spiritual-icon mb-3">💰</div>
+                        <h5 class="card-title">Pricing Settings</h5>
+                        <p class="card-text">Adjust session prices and packages</p>
+                        <button class="btn btn-spiritual" data-bs-toggle="modal" data-bs-target="#pricingModal">
+                            Update Prices
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <div class="card spiritual-card h-100">
+                    <div class="card-body text-center">
+                        <div class="spiritual-icon mb-3">📱</div>
+                        <h5 class="card-title">TikTok Analytics</h5>
+                        <p class="card-text">Track your social media performance</p>
+                        <a href="https://www.tiktok.com/@tkotalks" target="_blank" class="btn btn-spiritual">
+                            View TikTok
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Today's Schedule -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h3 class="mb-4">
+                    <span class="spiritual-icon me-2">🗓️</span>
+                    Today's Schedule
+                </h3>
+            </div>
+
+            {% if todays_bookings %}
+                {% for booking in todays_bookings %}
+                <div class="col-md-6 mb-3">
+                    <div class="card spiritual-card">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-8">
+                                    <h6 class="card-title mb-1">
+                                        {{ booking.session_type.replace('_', ' ').title() }}
+                                        <span class="badge bg-divine-gold text-dark ms-2">${{ booking.amount }}</span>
+                                    </h6>
+                                    <p class="card-text mb-1">
+                                        <strong>Time:</strong> {{ booking.booking_datetime_cst.strftime('%I:%M %p CST') }}<br>
+                                        <strong>Client:</strong> {{ booking.user.first_name }} {{ booking.user.last_name[0] }}.
+                                    </p>
+                                    {% if booking.special_requests %}
+                                        <small class="text-muted">{{ booking.special_requests[:50] }}...</small>
+                                    {% endif %}
+                                </div>
+                                <div class="col-4 text-end">
+                                    <span class="badge bg-{{ 'success' if booking.status == 'confirmed' else 'warning' }} mb-2 d-block">
+                                        {{ booking.status.title() }}
+                                    </span>
+                                    {% if booking.can_access_session() %}
+                                        <a href="{{ url_for('main.session_room', booking_id=booking.id) }}" 
+                                           class="btn btn-spiritual btn-sm">
+                                            Enter Room
+                                        </a>
+                                    {% else %}
+                                        <small class="text-muted">
+                                            Available 5 min before
+                                        </small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12">
+                    <div class="card spiritual-card">
+                        <div class="card-body text-center py-5">
+                            <div class="spiritual-icon mb-3">🌅</div>
+                            <h5>No Sessions Today</h5>
+                            <p class="text-muted">Enjoy your free time or promote on TikTok!</p>
+                            <a href="https://www.tiktok.com/@tkotalks" target="_blank" class="btn btn-outline-spiritual">
+                                <span class="me-2">📱</span>Go to TikTok
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Recent Bookings -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h3 class="mb-4">
+                    <span class="spiritual-icon me-2">📋</span>
+                    Recent Bookings
+                </h3>
+
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Date</th>
+                                <th>Client</th>
+                                <th>Session Type</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in recent_bookings %}
+                            <tr>
+                                <td>{{ booking.booking_datetime_cst.strftime('%m/%d %I:%M%p') }}</td>
+                                <td>{{ booking.user.first_name }} {{ booking.user.last_name[0] }}.</td>
+                                <td>{{ booking.session_type.replace('_', ' ').title() }}</td>
+                                <td class="text-divine-gold fw-bold">${{ booking.amount }}</td>
+                                <td>
+                                    <span class="badge bg-{{ 'success' if booking.status == 'confirmed' else 'warning' if booking.status == 'pending' else 'secondary' }}">
+                                        {{ booking.status.title() }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-outline-primary btn-sm" onclick="viewBooking('{{ booking.id }}')">
+                                            View
+                                        </button>
+                                        {% if booking.status == 'pending' %}
+                                        <button class="btn btn-outline-success btn-sm" onclick="confirmBooking('{{ booking.id }}')">
+                                            Confirm
+                                        </button>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Metrics -->
+        <div class="row">
+            <div class="col-12">
+                <h3 class="mb-4">
+                    <span class="spiritual-icon me-2">📈</span>
+                    Performance Metrics
+                </h3>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card spiritual-card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Session Type Breakdown</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <strong>Quick Insight ($17):</strong><br>
+                                <span class="text-divine-gold">{{ session_stats.quick_insight }} sessions</span>
+                            </div>
+                            <div class="col-6">
+                                <strong>Deep Reading ($97):</strong><br>
+                                <span class="text-divine-gold">{{ session_stats.deep_reading }} sessions</span>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-6">
+                                <strong>Soul Transformation ($297):</strong><br>
+                                <span class="text-divine-gold">{{ session_stats.soul_transformation }} sessions</span>
+                            </div>
+                            <div class="col-6">
+                                <strong>Average Value:</strong><br>
+                                <span class="text-divine-gold">${{ "%.2f"|format(session_stats.average_value) }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card spiritual-card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Customer Insights</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <strong>Total Clients:</strong><br>
+                                <span class="text-divine-gold">{{ customer_stats.total_customers }}</span>
+                            </div>
+                            <div class="col-6">
+                                <strong>Repeat Customers:</strong><br>
+                                <span class="text-divine-gold">{{ customer_stats.repeat_customers }}</span>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-6">
+                                <strong>New This Month:</strong><br>
+                                <span class="text-divine-gold">{{ customer_stats.new_this_month }}</span>
+                            </div>
+                            <div class="col-6">
+                                <strong>Retention Rate:</strong><br>
+                                <span class="text-divine-gold">{{ "%.1f"|format(customer_stats.retention_rate) }}%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Availability Modal -->
+<div class="modal fade" id="availabilityModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content spiritual-card">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Your Availability</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted">Current Schedule: Weekdays 5:30-10pm, Weekends 8am-10pm CST</p>
+                <form id="availability-form">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Weekday Start Time</label>
+                            <input type="time" class="form-control" value="17:30">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Weekday End Time</label>
+                            <input type="time" class="form-control" value="22:00">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Weekend Start Time</label>
+                            <input type="time" class="form-control" value="08:00">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Weekend End Time</label>
+                            <input type="time" class="form-control" value="22:00">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-spiritual">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pricing Modal -->
+<div class="modal fade" id="pricingModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content spiritual-card">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Session Pricing</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="pricing-form">
+                    <div class="mb-3">
+                        <label class="form-label">Quick Insight (15 min)</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" value="17" step="1">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Deep Reading (45 min)</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" value="97" step="1">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Soul Transformation (90 min)</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" value="297" step="1">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-spiritual">Update Prices</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function viewBooking(bookingId) {
+    // Redirect to booking details
+    window.location.href = `/admin/booking/${bookingId}`;
+}
+
+function confirmBooking(bookingId) {
+    if (confirm('Confirm this booking?')) {
+        fetch(`/admin/confirm-booking/${bookingId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then(response => {
+            if (response.ok) {
+                location.reload();
+            }
+        });
+    }
+}
+</script>
+{% endblock %}

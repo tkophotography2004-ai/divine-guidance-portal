@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}Your Divine Dashboard - Divine Talks with Zahrah Imani{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <!-- Hero Section -->
+    <div class="hero-gradient">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                <div class="col-12 text-center">
+                    <h1 class="display-5 text-white mb-3 animate-fadeInUp">
+                        Welcome to Your Sacred Space ✨
+                    </h1>
+                    <p class="lead text-white-80 mb-4 animate-fadeInUp" style="animation-delay: 0.2s;">
+                        Your divine guidance awaits, {{ current_user.first_name }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <!-- Quick Stats -->
+        <div class="row mb-5">
+            <div class="col-md-4 mb-3">
+                <div class="card spiritual-card h-100">
+                    <div class="card-body text-center">
+                        <div class="spiritual-icon mb-3">🌟</div>
+                        <h5 class="card-title">Sessions Completed</h5>
+                        <h2 class="text-divine-gold">{{ user_stats.completed_sessions }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card spiritual-card h-100">
+                    <div class="card-body text-center">
+                        <div class="spiritual-icon mb-3">📅</div>
+                        <h5 class="card-title">Upcoming Sessions</h5>
+                        <h2 class="text-divine-gold">{{ user_stats.upcoming_sessions }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card spiritual-card h-100">
+                    <div class="card-body text-center">
+                        <div class="spiritual-icon mb-3">💫</div>
+                        <h5 class="card-title">Member Since</h5>
+                        <h2 class="text-divine-gold">{{ current_user.created_at.strftime('%b %Y') }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="text-center">
+                    <a href="{{ url_for('main.book_session') }}" class="btn btn-spiritual btn-lg me-3 mb-3 animate-pulse-glow">
+                        <span class="me-2">✨</span> Book New Session
+                    </a>
+                    <a href="{{ url_for('main.tiktok_redirect') }}" class="btn btn-outline-spiritual btn-lg mb-3" target="_blank">
+                        <span class="me-2">📱</span> Follow on TikTok
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upcoming Sessions -->
+        {% if upcoming_bookings %}
+        <div class="row">
+            <div class="col-12">
+                <h3 class="mb-4 text-center">
+                    <span class="spiritual-icon me-2">🔮</span>
+                    Your Upcoming Divine Sessions
+                </h3>
+
+                {% for booking in upcoming_bookings %}
+                <div class="card spiritual-card mb-3">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h5 class="card-title mb-2">
+                                    {{ booking.session_type.replace('_', ' ').title() }} Session
+                                    <span class="badge bg-divine-gold text-dark ms-2">${{ booking.amount }}</span>
+                                </h5>
+                                <p class="card-text mb-2">
+                                    <strong>Date:</strong> {{ booking.booking_datetime_cst.strftime('%B %d, %Y') }}<br>
+                                    <strong>Time:</strong> {{ booking.booking_datetime_cst.strftime('%I:%M %p CST') }}
+                                </p>
+                                <p class="text-muted small mb-0">
+                                    Booking ID: {{ booking.id }}
+                                </p>
+                            </div>
+                            <div class="col-md-4 text-md-end">
+                                {% if booking.status == 'confirmed' %}
+                                    <span class="badge bg-success mb-2 d-block">Confirmed</span>
+                                    {% if booking.can_access_session() %}
+                                        <a href="{{ url_for('main.session_room', booking_id=booking.id) }}" 
+                                           class="btn btn-spiritual btn-sm">
+                                            Enter Session Room
+                                        </a>
+                                    {% else %}
+                                        <small class="text-muted d-block">
+                                            Available 5 min before session
+                                        </small>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="badge bg-warning text-dark">{{ booking.status.title() }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Session History -->
+        {% if past_bookings %}
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3 class="mb-4 text-center">
+                    <span class="spiritual-icon me-2">📚</span>
+                    Your Sacred Journey History
+                </h3>
+
+                <div class="accordion" id="historyAccordion">
+                    {% for booking in past_bookings %}
+                    <div class="accordion-item spiritual-card mb-2">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#history{{ loop.index }}">
+                                <div class="d-flex align-items-center w-100">
+                                    <span class="me-3">🌟</span>
+                                    <div>
+                                        <strong>{{ booking.session_type.replace('_', ' ').title() }} Session</strong>
+                                        <small class="d-block text-muted">
+                                            {{ booking.booking_datetime_cst.strftime('%B %d, %Y at %I:%M %p CST') }}
+                                        </small>
+                                    </div>
+                                    <span class="badge bg-divine-gold text-dark ms-auto me-3">${{ booking.amount }}</span>
+                                </div>
+                            </button>
+                        </h2>
+                        <div id="history{{ loop.index }}" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <p><strong>Status:</strong> 
+                                    <span class="badge bg-success">{{ booking.status.title() }}</span>
+                                </p>
+                                <p><strong>Duration:</strong> 
+                                    {{ '15 minutes' if booking.session_type == 'quick_insight' else 
+                                       '45 minutes' if booking.session_type == 'deep_reading' else 
+                                       '90 minutes' }}
+                                </p>
+                                {% if booking.notes %}
+                                <p><strong>Session Notes:</strong></p>
+                                <div class="alert alert-light">{{ booking.notes }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Call to Action -->
+        {% if not upcoming_bookings %}
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card spiritual-card bg-gradient text-center">
+                    <div class="card-body py-5">
+                        <h4 class="mb-3">Ready for Your Next Divine Session? ✨</h4>
+                        <p class="mb-4">Connect with Zahrah's wisdom and discover the guidance your soul seeks.</p>
+                        <a href="{{ url_for('main.book_session') }}" class="btn btn-spiritual btn-lg animate-pulse-glow">
+                            Book Your Session Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
